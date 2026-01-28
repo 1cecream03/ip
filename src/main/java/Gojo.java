@@ -4,11 +4,11 @@ public class Gojo {
         String name = "Gojo";
 
         printLine();
-        System.out.println("Hello! I'm " + name);
-        System.out.println("What can I do for you?");
+        System.out.println("Throughout heaven and earth, I alone am the honored one.");
+        System.out.println("I'm " + name + ". Ask me anything.");
         printLine();
 
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println("See ya!");
         printLine();
     }
 
