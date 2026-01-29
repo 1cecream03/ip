@@ -6,6 +6,9 @@ public class Gojo {
         String name = "Gojo";
         Scanner in = new Scanner(System.in);
 
+        String[] tasks = new String[100];
+        int taskCount = 0;
+
         printLine();
         System.out.println("Throughout heaven and earth, I alone am the honored one.");
         System.out.println("I'm " + name + ". Ask me anything.");
@@ -14,17 +17,33 @@ public class Gojo {
         String command;
         while (true) {
             command = in.nextLine();
+
+            // Case 1: Exit
             if (command.equals("bye")) {
+                printLine();
+                System.out.println("Bye. Don't get weak while I'm gone.");
+                printLine();
                 break;
             }
+            // Case 2: List all tasks
+            else if (command.equals("list")) {
+                printLine();
+                System.out.println("Here are the tasks in your list. Try to keep up:");
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println((i + 1) + ". " + tasks[i]);
+                }
+                printLine();
+            }
+            // Case 3: Add a new task (Default)
+            else {
+                tasks[taskCount] = command;
+                taskCount++;
 
-            printLine();
-            System.out.println(command);
-            printLine();
+                printLine();
+                System.out.println("added: " + command);
+                printLine();
+            }
         }
-
-        System.out.println("See ya!");
-        printLine();
     }
 
     public static void printLine() {
