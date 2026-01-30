@@ -6,7 +6,7 @@ public class Gojo {
         String name = "Gojo";
         Scanner in = new Scanner(System.in);
 
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
 
         printLine();
@@ -30,13 +30,37 @@ public class Gojo {
                 printLine();
                 System.out.println("Here are the tasks in your list. Try to keep up:");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    System.out.println((i + 1) + "." + tasks[i]);
                 }
                 printLine();
             }
             // Case 3: Add a new task (Default)
+            else if (command.startsWith("mark ")) {
+                // Extract the number (e.g., "2") and convert to integer
+                int taskNumber = Integer.parseInt(command.substring(5));
+                int index = taskNumber - 1; // Adjust for 0-based array index
+
+                tasks[index].markAsDone();
+
+                printLine();
+                System.out.println("Good. I've marked this task as done:");
+                System.out.println("  " + tasks[index]);
+                printLine();
+            }
+            else if (command.startsWith("unmark ")) {
+                int taskNumber = Integer.parseInt(command.substring(7));
+                int index = taskNumber - 1;
+
+                tasks[index].markAsUndone();
+
+                printLine();
+                System.out.println("Okay, I've marked this task as not done:");
+                System.out.println("  " + tasks[index]);
+                printLine();
+            }
             else {
-                tasks[taskCount] = command;
+                // CHANGE 5: Create a new Task object instead of just a string
+                tasks[taskCount] = new Task(command);
                 taskCount++;
 
                 printLine();
