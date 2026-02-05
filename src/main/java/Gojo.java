@@ -38,7 +38,7 @@ public class Gojo {
             else if (command.startsWith("mark ")) {
                 // Extract the number (e.g., "2") and convert to integer
                 int taskNumber = Integer.parseInt(command.substring(5));
-                int index = taskNumber - 1; // Adjust for 0-based array index
+                int index = taskNumber - 1;
 
                 tasks[index].markAsDone();
 
@@ -58,8 +58,24 @@ public class Gojo {
                 System.out.println("  " + tasks[index]);
                 printLine();
             }
+            else if (command.startsWith("todo ")) {
+                tasks[taskCount] = new Todo(command.substring(5));
+                taskCount++;
+                printAddedMessage(tasks[taskCount - 1], taskCount);
+            }
+            else if (command.startsWith("deadline ")) {
+                String[] parts = command.substring(9).split(" /by ");
+                tasks[taskCount] = new Deadline(parts[0], parts[1]);
+                taskCount++;
+                printAddedMessage(tasks[taskCount - 1], taskCount);
+            }
+            else if (command.startsWith("event ")) {
+                String[] parts = command.substring(6).split(" /from | /to ");
+                tasks[taskCount] = new Event(parts[0], parts[1], parts[2]);
+                taskCount++;
+                printAddedMessage(tasks[taskCount - 1], taskCount);
+            }
             else {
-                // CHANGE 5: Create a new Task object instead of just a string
                 tasks[taskCount] = new Task(command);
                 taskCount++;
 
@@ -72,5 +88,13 @@ public class Gojo {
 
     public static void printLine() {
         System.out.println("____________________________________________________________");
+    }
+
+    public static void printAddedMessage(Task task, int totalTasks) {
+        printLine();
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + task);
+        System.out.println("Now you have " + totalTasks + " tasks in the list.");
+        printLine();
     }
 }
