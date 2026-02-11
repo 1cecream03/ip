@@ -2,16 +2,22 @@ import java.util.Scanner;
 
 public class Gojo {
 
-    public static void main(String[] args) {
-        String name = "Gojo";
-        Scanner in = new Scanner(System.in);
+    private static final String DIVIDER = "____________________________________________________________";
+    private static final String INDENT = "    ";
+    private static final String NAME = "Gojo";
+    private static Task[] tasks = new Task[100];
+    private static int taskCount = 0;
+    private static final int MARK_OFFSET = 5;
+    private static final int UNMARK_OFFSET = 7;
+    private static final int TODO_OFFSET = 5;
 
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
 
         printLine();
         System.out.println("Throughout heaven and earth, I alone am the honored one.");
-        System.out.println("I'm " + name + ". Ask me anything.");
+        System.out.println("I'm " + NAME + ". Ask me anything.");
         printLine();
 
         String command;
@@ -37,7 +43,7 @@ public class Gojo {
             // Case 3: Add a new task (Default)
             else if (command.startsWith("mark ")) {
                 // Extract the number (e.g., "2") and convert to integer
-                int taskNumber = Integer.parseInt(command.substring(5));
+                int taskNumber = Integer.parseInt(command.substring(MARK_OFFSET));
                 int index = taskNumber - 1;
 
                 tasks[index].markAsDone();
@@ -48,7 +54,7 @@ public class Gojo {
                 printLine();
             }
             else if (command.startsWith("unmark ")) {
-                int taskNumber = Integer.parseInt(command.substring(7));
+                int taskNumber = Integer.parseInt(command.substring(UNMARK_OFFSET));
                 int index = taskNumber - 1;
 
                 tasks[index].markAsUndone();
@@ -59,7 +65,7 @@ public class Gojo {
                 printLine();
             }
             else if (command.startsWith("todo ")) {
-                tasks[taskCount] = new Todo(command.substring(5));
+                tasks[taskCount] = new Todo(command.substring(TODO_OFFSET));
                 taskCount++;
                 printAddedMessage(tasks[taskCount - 1], taskCount);
             }
@@ -87,7 +93,7 @@ public class Gojo {
     }
 
     public static void printLine() {
-        System.out.println("____________________________________________________________");
+        System.out.println(DIVIDER);
     }
 
     public static void printAddedMessage(Task task, int totalTasks) {
