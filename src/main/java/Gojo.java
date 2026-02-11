@@ -10,97 +10,89 @@ public class Gojo {
     private static final int MARK_OFFSET = 5;
     private static final int UNMARK_OFFSET = 7;
     private static final int TODO_OFFSET = 5;
+    private static final int DEADLINE_OFFSET = 9;
+    private static final int EVENT_OFFSET = 6;
+
 
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
-        printLine();
-        System.out.println("Throughout heaven and earth, I alone am the honored one.");
-        System.out.println("I'm " + NAME + ". Ask me anything.");
-        printLine();
+        formatResponse("Throughout heaven and earth, I alone am the honored one.\n" +
+                "I'm " + NAME + ". Ask me anything.");
 
-        String command;
         while (true) {
-            command = in.nextLine();
+            String input = in.nextLine();
 
-            // Case 1: Exit
-            if (command.equals("bye")) {
-                printLine();
-                System.out.println("Bye. Don't get weak while I'm gone.");
-                printLine();
+            //Exit
+            if (input.equals("bye")) {
+                formatResponse("Bye. Don't get weak while I'm gone.");
                 break;
             }
-            // Case 2: List all tasks
-            else if (command.equals("list")) {
-                printLine();
-                System.out.println("Here are the tasks in your list. Try to keep up:");
+            //List all tasks
+            else if (input.equals("list")) {
+                String listContent = "";
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + "." + tasks[i]);
+                    listContent += (i + 1) + ". " + tasks[i] + "\n";
                 }
-                printLine();
+                formatResponse(listContent);
             }
-            // Case 3: Add a new task (Default)
-            else if (command.startsWith("mark ")) {
-                // Extract the number (e.g., "2") and convert to integer
-                int taskNumber = Integer.parseInt(command.substring(MARK_OFFSET));
+            //Mark task
+            else if (input.startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(input.substring(MARK_OFFSET));
                 int index = taskNumber - 1;
-
                 tasks[index].markAsDone();
-
-                printLine();
-                System.out.println("Good. I've marked this task as done:");
-                System.out.println("  " + tasks[index]);
-                printLine();
+                formatResponse("Good. I've marked this task as done:\n  " + tasks[index]);
             }
-            else if (command.startsWith("unmark ")) {
-                int taskNumber = Integer.parseInt(command.substring(UNMARK_OFFSET));
+            //Unmark task
+            else if (input.startsWith("unmark ")) {
+                int taskNumber = Integer.parseInt(input.substring(UNMARK_OFFSET));
                 int index = taskNumber - 1;
-
                 tasks[index].markAsUndone();
-
-                printLine();
-                System.out.println("Okay, I've marked this task as not done:");
-                System.out.println("  " + tasks[index]);
-                printLine();
+                formatResponse("Okay, I've marked this task as not done:\n  " + tasks[index]);
             }
-            else if (command.startsWith("todo ")) {
-                tasks[taskCount] = new Todo(command.substring(TODO_OFFSET));
+            else if (input.startsWith("todo ")) {
+                tasks[taskCount] = new Todo(input.substring(TODO_OFFSET));
                 taskCount++;
                 printAddedMessage(tasks[taskCount - 1], taskCount);
             }
-            else if (command.startsWith("deadline ")) {
-                String[] parts = command.substring(9).split(" /by ");
+            else if (input.startsWith("deadline ")) {
+                String[] parts = input.substring(DEADLINE_OFFSET).split(" /by ");
                 tasks[taskCount] = new Deadline(parts[0], parts[1]);
                 taskCount++;
                 printAddedMessage(tasks[taskCount - 1], taskCount);
             }
-            else if (command.startsWith("event ")) {
-                String[] parts = command.substring(6).split(" /from | /to ");
+            else if (input.startsWith("event ")) {
+                String[] parts = input.substring(EVENT_OFFSET).split(" /from | /to ");
                 tasks[taskCount] = new Event(parts[0], parts[1], parts[2]);
                 taskCount++;
                 printAddedMessage(tasks[taskCount - 1], taskCount);
             }
+            //Add task
             else {
-                tasks[taskCount] = new Task(command);
+                tasks[taskCount] = new Task(input);
                 taskCount++;
-
-                printLine();
-                System.out.println("added: " + command);
-                printLine();
+                formatResponse("added: " + input);
             }
         }
     }
 
     public static void printLine() {
-        System.out.println(DIVIDER);
+        System.out.println(INDENT + DIVIDER);
+    }
+
+    public static void formatResponse(String message) {
+        printLine();
+        for (String line : message.split("\n")) {
+            System.out.println(INDENT + " " + line);
+        }
+        printLine();
     }
 
     public static void printAddedMessage(Task task, int totalTasks) {
-        printLine();
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + totalTasks + " tasks in the list.");
-        printLine();
+        String message = "Got it. I've added this task:\n" +
+                "  " + task + "\n" +
+                "Now you have " + totalTasks + " tasks in the list.";
+        formatResponse(message);
     }
 }
