@@ -1,12 +1,14 @@
+package gojo;
+
 import java.util.Scanner;
 
 public class Gojo {
     // UI Configuration Constants
     private static final String DIVIDER = "____________________________________________________________";
     private static final String INDENT = "    ";
-    private static final String NAME = "Gojo";
+    private static final String NAME = "gojo.Gojo";
 
-    // Task Management State
+    // gojo.Task Management State
     private static Task[] tasks = new Task[100];
     private static int taskCount = 0;
 
@@ -59,7 +61,7 @@ public class Gojo {
                     tasks[index].markAsUndone();
                     formatResponse("Okay, I've marked this task as not done:\n  " + tasks[index]);
                 }
-                //Todo logic
+                //gojo.Todo logic
                 else if (input.startsWith("todo ")) {
                     if (input.trim().length() <= 4) {
                         throw new GojoException("You want me to do nothing? The description of a todo cannot be empty.");
@@ -68,7 +70,7 @@ public class Gojo {
                     taskCount++;
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
-                //Deadline logic
+                //gojo.Deadline logic
                 else if (input.startsWith("deadline ")) {
                     if (input.trim().length() <= 8) {
                         throw new GojoException("A deadline cannot be empty.");
@@ -82,7 +84,7 @@ public class Gojo {
                     taskCount++;
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
-                //Event logic
+                //gojo.Event logic
                 else if (input.startsWith("event ")) {
                     if (input.trim().length() <= 5) {
                         throw new GojoException("An event cannot be empty.");
