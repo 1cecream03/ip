@@ -61,7 +61,7 @@ public class Gojo {
                     tasks[index].markAsUndone();
                     formatResponse("Okay, I've marked this task as not done:\n  " + tasks[index]);
                 }
-                //gojo.Todo logic
+                //Todo logic
                 else if (input.startsWith("todo ")) {
                     if (input.trim().length() <= 4) {
                         throw new GojoException("You want me to do nothing? The description of a todo cannot be empty.");
@@ -70,7 +70,7 @@ public class Gojo {
                     taskCount++;
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
-                //gojo.Deadline logic
+                //Deadline logic
                 else if (input.startsWith("deadline ")) {
                     if (input.trim().length() <= 8) {
                         throw new GojoException("A deadline cannot be empty.");
@@ -84,7 +84,7 @@ public class Gojo {
                     taskCount++;
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
-                //gojo.Event logic
+                //Event logic
                 else if (input.startsWith("event ")) {
                     if (input.trim().length() <= 5) {
                         throw new GojoException("An event cannot be empty.");
@@ -97,24 +97,21 @@ public class Gojo {
                     taskCount++;
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
-                //Add task
-                // Unknown Command (This handles the "blah" case)
+                //Unknown Command
                 else {
                     throw new GojoException("What is that? I don't know what that means.");
                 }
 
             } catch (GojoException e) {
-                // This catches our custom errors and prints them nicely
                 formatResponse("Umm... " + e.getMessage());
             } catch (NumberFormatException e) {
-                // This catches cases where they type "mark xyz" instead of "mark 1"
+                // This catches cases where they type "mark xyz"
                 formatResponse("OPPS!!! That's not a valid number.");
             }
         }
     }
 
     public static void printLine() {
-
         System.out.println(INDENT + DIVIDER);
     }
 
