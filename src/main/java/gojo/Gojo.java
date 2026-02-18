@@ -6,11 +6,13 @@ public class Gojo {
     // UI Configuration Constants
     private static final String DIVIDER = "____________________________________________________________";
     private static final String INDENT = "    ";
-    private static final String NAME = "gojo.Gojo";
+    private static final String NAME = "Gojo";
 
     // gojo.Task Management State
     private static Task[] tasks = new Task[100];
     private static int taskCount = 0;
+
+    private static Storage storage;
 
     // Command Parsing Offsets
     private static final int MARK_OFFSET = 5;
@@ -20,6 +22,16 @@ public class Gojo {
     private static final int EVENT_OFFSET = 6;
 
     public static void main(String[] args) {
+        storage = new Storage("data/gojo.txt"); // 1. Setup Storage
+
+        try {
+            // 2. Load the file directly into your array
+            // The method returns the correct count (e.g., 5 tasks loaded)
+            taskCount = storage.load(tasks);
+        } catch (GojoException e) {
+            formatResponse("Error loading tasks: " + e.getMessage());
+        }
+
         Scanner in = new Scanner(System.in);
 
         formatResponse("Throughout heaven and earth, I alone am the honored one.\n" +
@@ -49,6 +61,7 @@ public class Gojo {
                     int taskNumber = Integer.parseInt(input.substring(MARK_OFFSET));
                     int index = taskNumber - 1;
                     tasks[index].markAsDone();
+                    storage.save(tasks, taskCount);
                     formatResponse("Good. I've marked this task as done:\n  " + tasks[index]);
                 }
                 //Unmark task
@@ -59,6 +72,7 @@ public class Gojo {
                     int taskNumber = Integer.parseInt(input.substring(UNMARK_OFFSET));
                     int index = taskNumber - 1;
                     tasks[index].markAsUndone();
+                    storage.save(tasks, taskCount);
                     formatResponse("Okay, I've marked this task as not done:\n  " + tasks[index]);
                 }
                 //Todo logic
@@ -68,6 +82,7 @@ public class Gojo {
                     }
                     tasks[taskCount] = new Todo(input.substring(TODO_OFFSET));
                     taskCount++;
+                    storage.save(tasks, taskCount);
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
                 //Deadline logic
@@ -82,6 +97,7 @@ public class Gojo {
                     }
                     tasks[taskCount] = new Deadline(parts[0], parts[1]);
                     taskCount++;
+                    storage.save(tasks, taskCount);
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
                 //Event logic
@@ -95,6 +111,7 @@ public class Gojo {
                     }
                     tasks[taskCount] = new Event(parts[0], parts[1], parts[2]);
                     taskCount++;
+                    storage.save(tasks, taskCount);
                     printAddedMessage(tasks[taskCount - 1], taskCount);
                 }
                 //Unknown Command
