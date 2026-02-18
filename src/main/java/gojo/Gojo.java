@@ -7,10 +7,13 @@ public class Gojo {
     // UI Configuration Constants
     private static final String DIVIDER = "____________________________________________________________";
     private static final String INDENT = "    ";
-    private static final String NAME = "gojo.Gojo";
+    private static final String NAME = "Gojo";
 
     // gojo.Task Management State
     private static ArrayList<Task> tasks = new ArrayList<>();
+
+    //Storage
+    private static Storage storage;
 
     // Command Parsing Offsets
     private static final int MARK_OFFSET = 5;
@@ -22,6 +25,16 @@ public class Gojo {
 
 
     public static void main(String[] args) {
+        storage = new Storage("data/gojo.txt");
+
+        try {
+            // 2. Load tasks (Level 7 logic adapted for ArrayList)
+            tasks = storage.load();
+        } catch (GojoException e) {
+            formatResponse("Error loading tasks: " + e.getMessage());
+            tasks = new ArrayList<>(); // Fallback to empty list
+        }
+
         Scanner in = new Scanner(System.in);
 
         formatResponse("Throughout heaven and earth, I alone am the honored one.\n" +
@@ -51,6 +64,7 @@ public class Gojo {
                     int taskNumber = Integer.parseInt(input.substring(MARK_OFFSET));
                     int index = taskNumber - 1;
                     tasks.get(index).markAsDone();
+                    storage.save(tasks);
                     formatResponse("Good. I've marked this task as done:\n  " + tasks.get(index));
                 }
                 //Unmark task
@@ -61,6 +75,7 @@ public class Gojo {
                     int taskNumber = Integer.parseInt(input.substring(UNMARK_OFFSET));
                     int index = taskNumber - 1;
                     tasks.get(index).markAsUndone();
+                    storage.save(tasks);
                     formatResponse("Okay, I've marked this task as not done:\n  " + tasks.get(index));
                 }
                 //Todo logic
@@ -70,6 +85,7 @@ public class Gojo {
                     }
                     Task newTask = new Todo(input.substring(TODO_OFFSET));
                     tasks.add(newTask);
+                    storage.save(tasks);
                     printAddedMessage(newTask);
                 }
                 //Deadline logic
@@ -84,6 +100,7 @@ public class Gojo {
                     }
                     Task newTask = new Deadline(parts[0], parts[1]);
                     tasks.add(newTask);
+                    storage.save(tasks);
                     printAddedMessage(newTask);
                 }
                 //Event logic
@@ -97,6 +114,7 @@ public class Gojo {
                     }
                     Task newTask = new Event(parts[0], parts[1], parts[2]);
                     tasks.add(newTask);
+                    storage.save(tasks);
                     printAddedMessage(newTask);
                 }
                 //Delete logic
@@ -110,6 +128,7 @@ public class Gojo {
 
                         if (index >= 0 && index < tasks.size()) { //making sure it is a valid no.
                             Task removedTask = tasks.remove(index);
+                            storage.save(tasks);
                             formatResponse("Noted. I've removed this task:\n" +
                                     "  " + removedTask + "\n" +
                                     "Now you have " + tasks.size() + " tasks in the list.");
