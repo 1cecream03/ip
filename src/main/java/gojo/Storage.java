@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 public class Storage {
     private String filePath;
@@ -37,7 +38,10 @@ public class Storage {
             type = "T";
         } else if (task instanceof Deadline) {
             type = "D";
-            extra = " | " + ((Deadline) task).by;
+            Deadline d = (Deadline) task;
+            extra = " | " + (d.by != null
+                    ? d.by.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"))
+                    : d.byString);
         } else if (task instanceof Event) {
             type = "E";
             extra = " | " + ((Event) task).from + " | " + ((Event) task).to;
