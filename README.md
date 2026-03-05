@@ -1,6 +1,6 @@
 # Gojo - Task Manager Chatbot
 
-> "Throughout heaven and earth, I alone am the honored one." – Gojo
+> "Throughout heaven and earth, I alone am the honored one." – Satoru Gojo
 
 Gojo is a desktop chatbot that helps you manage your tasks efficiently via a simple command-line interface. Whether it's a quick to-do, a deadline to meet, or an event to attend — Gojo has you covered.
 
