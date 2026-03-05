@@ -2,6 +2,10 @@ package gojo;
 
 import java.util.Scanner;
 
+/**
+ * Handles parsing and execution of user commands for the Gojo chatbot.
+ * Reads user input and delegates actions to the appropriate components.
+ */
 public class Parser {
     private TaskList tasks;
     private Ui ui;
@@ -15,12 +19,24 @@ public class Parser {
     private static final int DELETE_OFFSET = 7;
     private static final int FIND_OFFSET = 5;
 
+
+    /**
+     * Constructs a Parser with the given task list, UI, and storage.
+     *
+     * @param tasks The task list to operate on.
+     * @param ui The UI component for displaying messages.
+     * @param storage The storage component for saving tasks.
+     */
     public Parser(TaskList tasks, Ui ui, Storage storage) {
         this.tasks = tasks;
         this.ui = ui;
         this.storage = storage;
     }
 
+    /**
+     * Starts the main command loop, continuously reading and processing user input
+     * until the user types "bye".
+     */
     public void run() {
         Scanner in = new Scanner(System.in);
         ui.printWelcome();
