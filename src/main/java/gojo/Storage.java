@@ -7,14 +7,28 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles loading and saving of tasks to a file for the Gojo chatbot.
+ * Tasks are stored in a pipe-separated format in a text file.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the given file path.
+     *
+     * @param filePath The path to the file where tasks are saved and loaded from.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
-    //Save
+    /**
+     * Saves the given list of tasks to the file.
+     * Each task is written as a pipe-separated string on a new line.
+     *
+     * @param tasks The list of tasks to save.
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter fw = new FileWriter(filePath);
@@ -27,7 +41,13 @@ public class Storage {
         }
     }
 
-    // Converts Task to String
+    /**
+     * Converts a Task object into a pipe-separated string for saving to file.
+     * Format: TYPE | STATUS | DESCRIPTION | EXTRA (if applicable)
+     *
+     * @param task The task to convert.
+     * @return A pipe-separated string representation of the task.
+     */
     private String taskToSaveString(Task task) {
         String type = "";
         String status = task.isDone ? "1" : "0";
@@ -50,7 +70,13 @@ public class Storage {
         return type + " | " + status + " | " + description + extra;
     }
 
-    //Load
+    /**
+     * Loads tasks from the file and returns them as an ArrayList.
+     * If the file does not exist, it creates a new empty file.
+     *
+     * @return An ArrayList of tasks loaded from the file.
+     * @throws GojoException If the file cannot be created or loaded.
+     */
     public ArrayList<Task> load() throws GojoException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -85,7 +111,9 @@ public class Storage {
                 }
 
                 if (task != null) {
-                    if (isDone) task.markAsDone();
+                    if (isDone) {
+                        task.markAsDone();
+                    }
                     tasks.add(task);
                 }
             }
