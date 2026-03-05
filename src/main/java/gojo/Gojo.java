@@ -22,6 +22,7 @@ public class Gojo {
     private static final int DEADLINE_OFFSET = 9;
     private static final int EVENT_OFFSET = 6;
     private static final int DELETE_OFFSET = 7;
+    private static final int FIND_OFFSET = 5;
 
 
     public static void main(String[] args) {
@@ -137,6 +138,26 @@ public class Gojo {
                         }
                     } catch (NumberFormatException e) {
                         throw new GojoException("That's not a valid number.");
+                    }
+                }
+                // Find logic
+                else if (input.startsWith("find ")) {
+                    if (input.trim().length() <= FIND_OFFSET) {
+                        throw new GojoException("You want me to find nothing? Give me a keyword.");
+                    }
+                    String keyword = input.substring(5).trim();
+                    String result = "Here are the matching tasks in your list:\n";
+                    int count = 1;
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if (tasks.get(i).toString().contains(keyword)) {
+                            result += count + ". " + tasks.get(i) + "\n";
+                            count++;
+                        }
+                    }
+                    if (count == 1) {
+                        formatResponse("No tasks found with the keyword: " + keyword);
+                    } else {
+                        formatResponse(result);
                     }
                 }
                 //Unknown Command
