@@ -51,7 +51,11 @@ public class Parser {
                 }
                 //List all tasks
                 else if (input.equals("list")) {
-                    ui.formatResponse(tasks.listTasks());
+                    if (tasks.size() == 0) {
+                        ui.formatResponse("There's nothing here. You haven't given me a single task yet. Boring.");
+                    } else {
+                        ui.formatResponse(tasks.listTasks());
+                    }
                 }
                 //Mark task
                 else if (input.startsWith("mark ")) {

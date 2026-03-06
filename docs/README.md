@@ -72,11 +72,11 @@ Now you have 3 tasks in the list.
 ---
 
 ### 4. List All Tasks – `list`
-Displays all tasks currently in your list.
+Displays all tasks currently in your list. If your list is empty, Gojo will let you know.
 
 **Format:** `list`
 
-**Example:**
+**Example (with tasks):**
 ```
 list
 ```
@@ -85,6 +85,15 @@ list
 2.[D][ ] return book (by: Oct 15 2019, 6:00pm)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ```
+
+**Example (empty list):**
+```
+list
+```
+```
+Hah, there's nothing here. You haven't given me a single task yet. Boring.
+```
+
 
 ---
 
